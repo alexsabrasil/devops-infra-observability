@@ -8,8 +8,39 @@ const env = require('./config/env');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/error-handler');
 const notFound = require('./middlewares/not-found');
+const {
+  register,
+  httpRequestsTotal,
+  httpRequestDuration,
+} = require('./config/metrics');
 
 const app = express();
+
+// Prometheus HTTP metrics
+app.use((req, res, next) => {
+  const start = process.hrtime.bigint();
+
+  res.on('finish', () => {
+    // Não contabiliza o próprio scraping do Prometheus
+    if (req.path === '/metrics') return;
+
+    const duration =
+      Number(process.hrtime.bigint() - start) / 1_000_000_000;
+
+    const route = req.route?.path || req.path;
+
+    const labels = {
+      method: req.method,
+      route,
+      status_code: String(res.statusCode),
+    };
+
+    httpRequestsTotal.inc(labels);
+    httpRequestDuration.observe(labels, duration);
+  });
+
+  next();
+});
 
 // Security headers
 app.use(helmet());
@@ -55,6 +86,16 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
   });
+});
+
+// Prometheus metrics endpoint
+app.get('/metrics', async (req, res) => {
+  try {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
+  } catch (error) {
+    res.status(500).end(error.message);
+  }
 });
 
 // API routes
