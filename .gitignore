@@ -12,3 +12,6 @@ dist/
 *.tfplan
 crash.log
 crash.*.log
+
+# Security scan reports
+security/reports/*.json
