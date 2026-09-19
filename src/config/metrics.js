@@ -27,6 +27,10 @@ const httpRequestDuration = new client.Histogram({
   registers: [register],
 });
 
+const { registerSecurityMetrics } = require('./securityMetrics');
+
+registerSecurityMetrics(register);
+
 module.exports = {
   register,
   httpRequestsTotal,

@@ -8,6 +8,8 @@ RUN npm ci --omit=dev
 
 COPY src ./src
 
+COPY security/security-summary.json ./security/security-summary.json
+
 ENV NODE_ENV=production
 ENV PORT=3000
 

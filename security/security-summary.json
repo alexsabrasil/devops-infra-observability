@@ -1,0 +1,16 @@
+{
+  "trivy": {
+    "critical": 1,
+    "high": 23,
+    "medium": 20,
+    "low": 35
+  },
+  "semgrep": {
+    "findings": 0
+  },
+  "zap": {
+    "pass": 65,
+    "warn": 2,
+    "fail": 0
+  }
+}
