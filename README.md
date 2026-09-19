@@ -39,6 +39,18 @@ Mais do que executar uma aplicação Node.js, o projeto demonstra todo o ciclo o
 
 ---
 
+## 🎓 Contexto acadêmico
+
+Este projeto foi desenvolvido como atividade prática do curso de **DevOps**, realizado no programa **FAP - Formação Acelerada em Programação**, pela **Aponti Academy**.
+
+A proposta integra conhecimentos trabalhados durante a formação, aplicando em um único ambiente práticas de desenvolvimento, containerização, automação, CI/CD, observabilidade e Infraestrutura como Código.
+
+**Programa:** FAP - Formação Acelerada em Programação  
+**Formação:** DevOps  
+**Instituição:** Aponti Academy
+
+---
+
 ## 🎯 Objetivo
 
 O objetivo principal é construir um ambiente reproduzível no qual desenvolvimento, infraestrutura, automação e observabilidade façam parte do mesmo fluxo.
@@ -928,15 +940,15 @@ Um dos principais aprendizados foi compreender que DevOps não se resume à util
 
 # 👥 Equipe
 
-Projeto desenvolvido em equipe como atividade prática de DevOps e Observabilidade.
+Projeto desenvolvido em equipe durante a formação em **DevOps - FAP | Aponti Academy**.
 
 **Integrantes**
 
 - Alexsandra Tavares
-- Vinicius
-- Carlos
+- Carlos Eduardo
+- Vinicius Lacerda
+  
 
-> Os nomes completos dos integrantes podem ser adicionados conforme os dados utilizados na entrega acadêmica.
 
 ---
 
@@ -965,6 +977,10 @@ Hardening               ✅
 
 <p align="center">
   <strong>E-Commerce API | DevOps & Observability</strong>
+</p>
+
+<p align="center">
+  Projeto desenvolvido na formação DevOps • FAP • Aponti Academy
 </p>
 
 <p align="center">
