@@ -1,0 +1,33 @@
+rules:
+  - id: javascript-eval-detection
+    patterns:
+      - pattern: eval(...)
+    message: "Uso de eval() detectado. Avaliar risco de execução de código arbitrário."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+
+  - id: javascript-child-process-exec
+    patterns:
+      - pattern: $CP.exec(...)
+    message: "Uso de exec() detectado. Verificar possibilidade de command injection."
+    severity: WARNING
+    languages:
+      - javascript
+      - typescript
+
+  - id: hardcoded-secret-generic
+    patterns:
+      - pattern-either:
+          - pattern: |
+              password = "..."
+          - pattern: |
+              secret = "..."
+          - pattern: |
+              apiKey = "..."
+    message: "Possível segredo hardcoded detectado."
+    severity: WARNING
+    languages:
+      - javascript
+      - typescript

@@ -27,10 +27,28 @@ jobs:
       - name: Run tests
         run: npm test
 
+  security-sast:
+    name: Security - Semgrep SAST
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep SAST
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/src" \
+            semgrep/semgrep \
+            semgrep scan \
+            --config /src/.github/security/semgrep.yml \
+            /src/src
+
   docker:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    needs: test
+    needs: security-sast
 
     steps:
       - name: Checkout repository
