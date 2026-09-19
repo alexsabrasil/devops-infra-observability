@@ -1,4 +1,4 @@
-name: CI/CD - Build and Push Docker Image
+name: CI/CD - Build, Security Scan and Push Docker Image
 
 on:
   push:
@@ -45,10 +45,32 @@ jobs:
             --config /src/.github/security/semgrep.yml \
             /src/src
 
+  docker-security:
+    name: Build and Trivy Security Scan
+    runs-on: ubuntu-latest
+    needs: security-sast
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image for security scan
+        run: |
+          docker build -t ecommerce-api:security-scan .
+
+      - name: Run Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'ecommerce-api:security-scan'
+          format: 'table'
+          severity: 'CRITICAL,HIGH,MEDIUM,LOW'
+          exit-code: '0'
+          ignore-unfixed: false
+
   docker:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    needs: security-sast
+    needs: docker-security
 
     steps:
       - name: Checkout repository
