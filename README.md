@@ -1,16 +1,16 @@
-# 🛒 E-Commerce API | DevOps, DevSecOps & Observability
+# 🛒 E-Commerce | DevOps, DevSecOps & Observability
 
 <p align="center">
-  <strong>API de e-commerce desenvolvida em Node.js com foco em DevOps, DevSecOps, Observabilidade e Infraestrutura como Código.</strong>
+  <strong>Aplicação E-Commerce com Frontend React, API Node.js e uma arquitetura integrada de DevOps, DevSecOps, Observabilidade e Infraestrutura como Código.</strong>
 </p>
 
 <p align="center">
-  Desenvolvimento • Testes • Docker • CI/CD • Segurança • Observabilidade • IaC
+  React • Node.js • Docker • CI/CD • Segurança • Observabilidade • IaC
 </p>
 
 <p align="center">
   <img src="docs/images/ecommerce-devops-observability.png"
-       alt="Visão geral do projeto E-Commerce API com DevOps, DevSecOps e Observabilidade"
+       alt="Visão geral do projeto E-Commerce com DevOps, DevSecOps e Observabilidade"
        width="100%">
 </p>
 
@@ -18,35 +18,40 @@
 
 ## 📌 Sobre o projeto
 
-O **E-Commerce API | DevOps, DevSecOps & Observability** é um projeto desenvolvido para demonstrar, de forma integrada, práticas modernas de desenvolvimento de software, automação, containerização, segurança, integração contínua, observabilidade e Infraestrutura como Código.
+O **E-Commerce | DevOps, DevSecOps & Observability** é um projeto desenvolvido para demonstrar, de forma integrada, práticas modernas de desenvolvimento de software, automação, containerização, segurança, integração contínua, observabilidade e Infraestrutura como Código.
 
-A aplicação simula uma API REST de e-commerce responsável pelo gerenciamento de recursos como **produtos, categorias, clientes e pedidos**.
+A solução é composta por um **Frontend React** conectado a uma **API REST Node.js + Express**, responsável pelo gerenciamento dos principais recursos de um e-commerce, como produtos, categorias, clientes e pedidos.
 
-Mais do que executar uma aplicação Node.js, o projeto demonstra o ciclo operacional ao redor dela:
+O frontend apresenta uma visão operacional da aplicação e consulta o endpoint `/health` da API, permitindo visualizar seu estado e disponibilidade.
 
-- aplicação e dependências executadas em containers;
-- persistência de dados com PostgreSQL;
+Mais do que executar uma aplicação, o projeto demonstra o ciclo operacional ao redor dela:
+
+- frontend React executado em container e servido por Nginx;
+- API Node.js + Express containerizada;
+- persistência com PostgreSQL;
 - cache com Redis;
 - testes automatizados com Jest;
+- validação de lint e build do frontend;
 - pipeline CI/CD com GitHub Actions;
 - análise estática de segurança com Semgrep;
-- análise de vulnerabilidades da imagem com Trivy;
+- análise de vulnerabilidades da imagem da API com Trivy;
 - baseline DAST com OWASP ZAP;
-- build e publicação de imagem Docker;
-- métricas operacionais e de segurança expostas pela API;
+- build e publicação automatizada das imagens Docker;
+- publicação independente das imagens da API e do frontend no Docker Hub;
+- métricas operacionais e de segurança;
 - coleta de métricas com Prometheus;
 - dashboards de observabilidade e segurança com Grafana;
-- provisionamento automático dos dashboards Grafana;
-- infraestrutura AWS simulada localmente com LocalStack;
+- provisionamento automático dos dashboards;
+- infraestrutura AWS simulada com LocalStack;
 - provisionamento de recurso S3 utilizando Terraform.
 
 ---
 
 ## 🎓 Contexto acadêmico
 
-Este projeto foi desenvolvido como atividade prática do curso de **DevOps**, realizado no programa **FAP - Formação Acelerada em Programação**, pela **Aponti Academy**.
+Este projeto foi desenvolvido como atividade prática da formação em **DevOps**, realizada no programa **FAP - Formação Acelerada em Programação**, pela **Aponti Academy**.
 
-A proposta integra conhecimentos trabalhados durante a formação, aplicando em um único ambiente práticas de desenvolvimento, containerização, automação, CI/CD, segurança, observabilidade e Infraestrutura como Código.
+A proposta integra conhecimentos trabalhados durante a formação e demonstra, em um único ambiente, práticas de desenvolvimento, containerização, CI/CD, segurança, observabilidade e Infraestrutura como Código.
 
 **Programa:** FAP - Formação Acelerada em Programação  
 **Formação:** DevOps  
@@ -66,93 +71,112 @@ O projeto busca demonstrar conceitos relacionados a:
 
 ## 🏗️ Arquitetura
 
-A solução é composta por uma API Node.js integrada a PostgreSQL e Redis.
+A solução possui uma camada de frontend desenvolvida em React, uma API Node.js + Express e serviços de persistência, cache, observabilidade, segurança e infraestrutura.
 
-A aplicação disponibiliza métricas operacionais e métricas consolidadas de segurança no endpoint `/metrics`. O Prometheus realiza a coleta periódica dessas métricas e o Grafana utiliza o Prometheus como Data Source para apresentar os indicadores em dashboards.
+O frontend consulta a API e apresenta o estado operacional da aplicação.
 
-A camada DevSecOps utiliza diferentes controles:
+A API disponibiliza, entre outros recursos:
+
+- `/health` para verificação de saúde;
+- `/metrics` para métricas operacionais e de segurança;
+- `/api-docs/` para documentação Swagger.
+
+PostgreSQL é utilizado para persistência e Redis para cache.
+
+O Prometheus coleta periodicamente as métricas expostas pela API, enquanto o Grafana utiliza o Prometheus como Data Source para apresentar indicadores operacionais e de segurança.
+
+A camada DevSecOps utiliza:
 
 - **Semgrep** para análise estática do código;
-- **Trivy** para análise de vulnerabilidades da imagem e dependências;
-- **OWASP ZAP** para baseline de análise dinâmica da API.
+- **Trivy** para análise da imagem e seus componentes;
+- **OWASP ZAP** para baseline de análise dinâmica da aplicação em execução.
 
 Os resultados validados dos scanners são consolidados em métricas de segurança, permitindo que o Grafana apresente o último baseline validado em um dashboard específico.
 
 Paralelamente, o Terraform utiliza o provider AWS direcionado ao LocalStack para provisionar infraestrutura AWS simulada localmente.
 
 ```text
-                         DESENVOLVIMENTO
-                                │
-                                ▼
-                    ┌─────────────────────┐
-                    │   E-Commerce API    │
-                    │ Node.js + Express   │
-                    └──────────┬──────────┘
-                               │
-                 ┌─────────────┴─────────────┐
-                 ▼                           ▼
-          ┌─────────────┐             ┌─────────────┐
-          │ PostgreSQL  │             │    Redis    │
-          │ Persistência│             │    Cache    │
-          └─────────────┘             └─────────────┘
+                         USUÁRIO
+                            │
+                            ▼
+                  ┌──────────────────┐
+                  │  Frontend React  │
+                  │   Nginx :8080    │
+                  └────────┬─────────┘
+                           │ HTTP
+                           ▼
+                  ┌──────────────────┐
+                  │  API Node.js     │
+                  │  Express :3000   │
+                  └────────┬─────────┘
+                           │
+              ┌────────────┴────────────┐
+              ▼                         ▼
+      ┌──────────────┐          ┌──────────────┐
+      │ PostgreSQL   │          │    Redis     │
+      │ Persistência │          │    Cache     │
+      └──────────────┘          └──────────────┘
 
-                              │
-                              ▼
-                         TESTES - JEST
-                              │
-                              ▼
-                         GitHub Actions
-                              │
-                              ▼
-                       Semgrep - SAST
-                              │
-                              ▼
-                        Docker Build
-                              │
-                              ▼
-                         Trivy Scan
-                              │
-                              ▼
-                    Build + Docker Hub
+
+                    CI/CD + DEVSECOPS
+
+                       Push na main
+                            │
+              ┌─────────────┴─────────────┐
+              ▼                           ▼
+        Test API                  Validate React
+        Jest 77/77                npm run lint
+                                  npm run build
+              │                           │
+              └─────────────┬─────────────┘
+                            ▼
+                       Semgrep SAST
+                            │
+                            ▼
+                    Build API + Trivy
+                            │
+                            ▼
+                Publish API + Frontend
+                       Docker Hub
 
 
                        SEGURANÇA / DAST
 
-                         API em execução
-                              │
-                              ▼
-                         OWASP ZAP
+                       API em execução
+                            │
+                            ▼
+                        OWASP ZAP
 
 
-                        OBSERVABILIDADE
+                       OBSERVABILIDADE
 
-                  API + Security Baseline
-                              │
-                              ▼
-                           /metrics
-                              │
-                              ▼
-                         Prometheus
-                              │
-                              ▼
-                           Grafana
-                       ┌──────┴──────┐
-                       ▼             ▼
-                Observability    Security
-                  Dashboard       Overview
+                 API + Security Baseline
+                            │
+                            ▼
+                         /metrics
+                            │
+                            ▼
+                       Prometheus
+                            │
+                            ▼
+                         Grafana
+                    ┌───────┴────────┐
+                    ▼                ▼
+              Observability       Security
+                Dashboard          Overview
 
 
-                  INFRAESTRUTURA COMO CÓDIGO
+                INFRAESTRUTURA COMO CÓDIGO
 
-                         Terraform
-                              │
-                              ▼
-                        AWS Provider
-                              │
-                              ▼
-                         LocalStack
-                              │
-                              ▼
+                       Terraform
+                            │
+                            ▼
+                      AWS Provider
+                            │
+                            ▼
+                       LocalStack
+                            │
+                            ▼
                          Amazon S3
 ```
 
@@ -162,10 +186,13 @@ Paralelamente, o Terraform utiliza o provider AWS direcionado ao LocalStack para
 
 | Categoria | Tecnologias |
 |---|---|
+| Frontend | React, Vite |
+| Web Server Frontend | Nginx |
 | Backend | Node.js, Express |
 | Banco de dados | PostgreSQL |
 | Cache | Redis |
 | Testes | Jest |
+| Qualidade Frontend | ESLint, Vite Build |
 | Containerização | Docker, Docker Compose |
 | CI/CD | GitHub Actions |
 | Registry | Docker Hub |
@@ -194,12 +221,15 @@ A aplicação possui estrutura para gerenciamento dos principais recursos de um 
 - persistência com PostgreSQL;
 - cache com Redis;
 - documentação da API com Swagger;
-- health check da aplicação;
+- health check;
+- frontend React conectado ao health check da API;
 - métricas de observabilidade;
 - métricas consolidadas de segurança;
-- testes automatizados.
+- testes automatizados;
+- dashboard operacional;
+- dashboard de segurança.
 
-Além das funcionalidades da API, o projeto implementa uma camada integrada de **DevOps, DevSecOps e Observabilidade**.
+Além das funcionalidades da aplicação, o projeto implementa uma camada integrada de **DevOps, DevSecOps, Observabilidade e IaC**.
 
 ---
 
@@ -215,24 +245,43 @@ devops-infra-observability/
 │   └── workflows/
 │       └── ci-cd.yml
 │
-├── grafana/
-│   ├── dashboards/
-│   │   ├── ecommerce-observability.json
-│   │   └── ecommerce-security-overview.json
-│   │
-│   └── provisioning/
-│       ├── dashboards/
-│       │   └── dashboards.yml
-│       └── datasources/
-│           └── prometheus.yml
+├── docs/
+│   └── images/
+│       └── ecommerce-devops-observability.png
 │
-├── prometheus/
-│   └── prometheus.yml
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   └── vite.config.js
+│
+├── monitoring/
+│   ├── grafana/
+│   │   ├── dashboards/
+│   │   │   ├── ecommerce-observability.json
+│   │   │   └── ecommerce-security-overview.json
+│   │   │
+│   │   └── provisioning/
+│   │       ├── dashboards/
+│   │       │   └── dashboards.yml
+│   │       └── datasources/
+│   │           └── prometheus.yml
+│   │
+│   └── prometheus/
+│       └── prometheus.yml
 │
 ├── security/
 │   ├── security-summary.json
-│   └── reports/
-│       └── trivy-report.json
+│   └── reports/                 # relatórios locais ignorados pelo Git
 │
 ├── src/
 │   ├── cache/
@@ -256,8 +305,6 @@ devops-infra-observability/
 │   └── variables.tf
 │
 ├── tests/
-│   ├── unit/
-│   └── setup.js
 │
 ├── .dockerignore
 ├── .env.example
@@ -265,31 +312,30 @@ devops-infra-observability/
 ├── docker-compose.yml
 ├── Dockerfile
 ├── jest.config.js
-├── package.json
 ├── package-lock.json
+├── package.json
 └── README.md
 ```
 
-> O diretório `security/reports/` contém relatórios brutos locais de scanners e é ignorado pelo Git. O arquivo `security/security-summary.json` contém somente o resumo sanitizado utilizado pelas métricas de segurança.
-
 ---
 
-# 🚀 Como executar
+# 🚀 Execução do projeto
 
 ## 1. Pré-requisitos
 
-Para executar o projeto localmente, é necessário ter instalado:
+Para executar o projeto localmente:
 
-- Git
-- Docker
-- Docker Compose
-- Terraform
-
-O LocalStack será executado através do Docker Compose.
+- Git;
+- Docker;
+- Docker Compose;
+- Node.js;
+- npm;
+- Terraform, para os testes de IaC;
+- LocalStack configurado para a etapa de infraestrutura.
 
 ---
 
-## 2. Clone o repositório
+## 2. Clonar o repositório
 
 ```bash
 git clone https://github.com/alexsabrasil/devops-infra-observability.git
@@ -298,94 +344,59 @@ cd devops-infra-observability
 
 ---
 
-## 3. Configure as variáveis de ambiente
+## 3. Configurar variáveis de ambiente
 
-Crie seu arquivo `.env` utilizando o arquivo de exemplo.
+Utilize o arquivo:
 
-### Linux/macOS
-
-```bash
-cp .env.example .env
+```text
+.env.example
 ```
 
-### PowerShell
+como referência para criar o `.env` local.
 
-```powershell
-Copy-Item .env.example .env
-```
+O `.env` não é versionado.
 
-Preencha as variáveis necessárias no `.env`.
-
-Exemplo:
-
-```env
-NODE_ENV=development
-PORT=3000
-
-DB_HOST=localhost
-DB_PORT=5433
-DB_NAME=ecommerce
-DB_USER=ecommerce
-DB_PASSWORD=
-DB_POOL_MIN=2
-DB_POOL_MAX=10
-
-REDIS_HOST=localhost
-REDIS_PORT=6379
-REDIS_PASSWORD=
-REDIS_DB=0
-
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
-
-LOCALSTACK_AUTH_TOKEN=
-```
-
-> [!IMPORTANT]
-> O arquivo `.env` contém configurações locais e possíveis credenciais e, por isso, **não deve ser enviado ao repositório**.
->
-> O projeto mantém apenas `.env.example` versionado.
-
-Para versões atuais do LocalStack que utilizem autenticação, informe seu próprio `LOCALSTACK_AUTH_TOKEN` no `.env`.
+Credenciais e tokens reais não devem ser armazenados no repositório.
 
 ---
 
-## 4. Suba o ambiente
-
-```bash
-docker compose up -d
-```
-
-Para reconstruir a aplicação após alterações:
+## 4. Subir a stack
 
 ```bash
 docker compose up -d --build
 ```
 
-Confira os serviços:
+A stack contém:
+
+| Serviço | Porta local | Função |
+|---|---:|---|
+| Frontend React | 8080 | Interface da aplicação |
+| API Node.js | 3000 | Backend |
+| PostgreSQL | 5433 | Persistência |
+| Redis | 6379 | Cache |
+| Prometheus | 9090 | Coleta de métricas |
+| Grafana | 3001 | Dashboards |
+| LocalStack | 4566 | Serviços AWS simulados |
+
+Verifique os containers:
 
 ```bash
 docker compose ps
 ```
 
-| Serviço | Porta |
-|---|---:|
-| E-Commerce API | 3000 |
-| PostgreSQL | 5433 → 5432 |
-| Redis | 6379 |
-| Prometheus | 9090 |
-| Grafana | 3001 → 3000 |
-| LocalStack | 4566 |
-
 ---
 
-# 🌐 Endpoints principais
+# 🌐 Endpoints e interfaces
 
-## API
+## Frontend React
 
 ```text
-http://localhost:3000
+http://localhost:8080
 ```
+
+O frontend apresenta uma visão operacional do ambiente e consulta o health check da API.
+
+---
 
 ## Health Check
 
@@ -393,19 +404,17 @@ http://localhost:3000
 http://localhost:3000/health
 ```
 
-Exemplo:
+Exemplo de retorno:
 
-```bash
-curl http://localhost:3000/health
+```json
+{
+  "status": "ok",
+  "timestamp": "...",
+  "uptime": 123.45
+}
 ```
 
-## Métricas
-
-```text
-http://localhost:3000/metrics
-```
-
-As métricas são disponibilizadas em formato compatível com Prometheus.
+---
 
 ## Swagger
 
@@ -415,150 +424,239 @@ http://localhost:3000/api-docs/
 
 ---
 
+## Métricas
+
+```text
+http://localhost:3000/metrics
+```
+
+---
+
+## Prometheus
+
+```text
+http://localhost:9090
+```
+
+---
+
+## Grafana
+
+```text
+http://localhost:3001
+```
+
+---
+
 # 🧪 Testes automatizados
 
-Os testes utilizam **Jest**.
-
-Execute:
+Os testes da API utilizam Jest.
 
 ```bash
 npm test
 ```
 
-Estado validado durante o desenvolvimento:
+Resultado validado:
 
 ```text
 Test Suites: 6 passed, 6 total
 Tests:       77 passed, 77 total
 ```
 
-Os testes fazem parte da pipeline de CI/CD e são executados antes das análises de segurança e da construção/publicação da imagem Docker.
+**77/77 testes aprovados.**
 
 ---
 
-# 🐳 Docker
+# ⚛️ Validação do Frontend React
 
-A API possui imagem própria definida pelo `Dockerfile`.
-
-Exemplo de build local:
+O frontend possui validações próprias antes da publicação.
 
 ```bash
-docker build -t ecommerce-api:1.0 .
+cd frontend
+npm ci
+npm run lint
+npm run build
 ```
 
-A execução completa do ambiente é realizada pelo Docker Compose:
+Validações realizadas:
 
-```bash
-docker compose up -d
+```text
+ESLint       ✅
+Vite Build   ✅
 ```
 
-Para verificar os containers:
+O build de produção gera os artefatos em:
 
-```bash
-docker compose ps
-```
-
-Para visualizar logs:
-
-```bash
-docker compose logs -f
-```
-
-Para interromper os serviços sem remover os volumes:
-
-```bash
-docker compose stop
+```text
+frontend/dist/
 ```
 
 ---
 
-# 🔄 CI/CD + DevSecOps
+# 🐳 Containerização
 
-O projeto utiliza **GitHub Actions** para automatizar testes, verificações de segurança e publicação da imagem Docker.
+A aplicação utiliza imagens separadas para backend e frontend.
 
-Workflow:
+## API
+
+A API utiliza um Dockerfile baseado em Node.js.
+
+Imagem local:
+
+```text
+ecommerce-api:1.0
+```
+
+## Frontend
+
+O frontend utiliza build do React/Vite e é servido por Nginx.
+
+Imagem local validada:
+
+```text
+ecommerce-frontend:1.0
+```
+
+O frontend está integrado ao `docker-compose.yml` e é disponibilizado em:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# 📦 Docker Hub
+
+As imagens da solução estão publicadas em repositórios independentes.
+
+## API
+
+```text
+https://hub.docker.com/r/alexsasec/devops-infra-observability-api
+```
+
+Imagem:
+
+```text
+alexsasec/devops-infra-observability-api
+```
+
+## Frontend React
+
+```text
+https://hub.docker.com/r/alexsasec/devops-infra-observability-frontend
+```
+
+Imagem:
+
+```text
+alexsasec/devops-infra-observability-frontend
+```
+
+A publicação automatizada utiliza:
+
+```text
+latest
+<github.sha>
+```
+
+A tag baseada no SHA do commit permite relacionar uma imagem publicada ao código que originou aquele build.
+
+O frontend também possui a versão manual validada:
+
+```text
+1.0
+```
+
+---
+
+# 🔄 CI/CD com GitHub Actions
+
+O workflow está localizado em:
 
 ```text
 .github/workflows/ci-cd.yml
 ```
 
-Fluxo implementado:
+A pipeline é executada em pushes para a branch `main` e também pode ser iniciada manualmente por `workflow_dispatch`.
+
+## Fluxo atual
 
 ```text
-Push na main
-      │
-      ▼
-Checkout
-      │
-      ▼
-Setup Node.js
-      │
-      ▼
-npm ci
-      │
-      ▼
-Test
-77 testes
-      │
-      ▼
-Security - Semgrep SAST
-      │
-      ▼
-Build da imagem para análise
-      │
-      ▼
-Trivy Security Scan
-      │
-      ▼
-Login Docker Hub
-      │
-      ▼
-Build final
-      │
-      ▼
-Push Docker Hub
+                         PUSH / MAIN
+                              │
+                ┌─────────────┴─────────────┐
+                ▼                           ▼
+          TEST API                 VALIDATE FRONTEND
+          npm ci                   npm ci
+          npm test                 npm run lint
+          77 testes                npm run build
+                │                           │
+                └─────────────┬─────────────┘
+                              ▼
+                     SECURITY - SEMGREP
+                              │
+                              ▼
+                  BUILD API + TRIVY SCAN
+                              │
+                              ▼
+                 PUBLISH DOCKER IMAGES
+                      ┌───────┴───────┐
+                      ▼               ▼
+                  API Image      Frontend Image
+                      │               │
+                      └──── Docker Hub ┘
 ```
 
-A pipeline aplica uma estratégia de **fail fast**, estabelecendo dependências entre os jobs.
-
-A análise Semgrep é executada antes do build da imagem. O Trivy é executado sobre uma imagem construída especificamente para a análise de segurança.
-
-Durante a fase atual do projeto, o Trivy opera como controle de detecção com:
-
-```yaml
-exit-code: '0'
-```
-
-Essa decisão permite registrar e acompanhar o baseline conhecido sem interromper permanentemente a entrega. Como evolução, o pipeline poderá adotar políticas progressivamente mais restritivas após o tratamento do baseline.
-
-Na validação final, o workflow foi concluído com sucesso nos quatro jobs:
+A execução final validada concluiu todos os jobs com sucesso:
 
 ```text
-Test                           ✅
-Security - Semgrep SAST        ✅
-Build and Trivy Security Scan  ✅
-Build and Push Docker Image    ✅
+Test API                         ✅
+Validate React Frontend          ✅
+Security - Semgrep SAST          ✅
+Build API and Trivy Security Scan ✅
+Publish API and Frontend Images  ✅
 ```
+
+Essa execução demonstra que uma alteração integrada à `main` passa por validações automáticas antes da publicação das imagens.
 
 ---
 
-# 🛡️ DevSecOps
+# 🔐 DevSecOps
 
-A camada de segurança foi incorporada ao fluxo para deslocar verificações para diferentes momentos do ciclo de desenvolvimento.
+A segurança foi integrada ao projeto em diferentes pontos do ciclo de desenvolvimento.
 
 ```text
-Código fonte       → Semgrep
-Imagem/dependências → Trivy
-Aplicação executando → OWASP ZAP
+Código
+  │
+  ▼
+Semgrep
+SAST
+  │
+  ▼
+Build da API
+  │
+  ▼
+Trivy
+Container / Components
+  │
+  ▼
+Docker Hub
+
+Aplicação em execução
+  │
+  ▼
+OWASP ZAP
+DAST
 ```
 
-Os scanners possuem objetivos e modelos de classificação diferentes. Por isso, seus resultados são apresentados separadamente e não são tratados como métricas equivalentes.
+Cada ferramenta atua em uma camada diferente.
 
 ---
 
 ## 🔎 Semgrep - SAST
 
-O Semgrep é utilizado para análise estática do código.
+O Semgrep realiza análise estática do código.
 
 Configuração:
 
@@ -566,34 +664,7 @@ Configuração:
 .github/security/semgrep.yml
 ```
 
-O conjunto utilizado verifica situações como:
-
-- uso de `eval()`;
-- execução de comandos com `exec()`;
-- possíveis segredos hardcoded.
-
-### Validação controlada
-
-O funcionamento do controle foi testado através da introdução temporária de um código contendo:
-
-```javascript
-eval(input);
-```
-
-O Semgrep identificou o padrão através da regra:
-
-```text
-javascript-eval-detection
-```
-
-O teste controlado gerou:
-
-```text
-1 Code Finding
-Blocking
-```
-
-Após a remoção do código de teste, uma nova análise apresentou:
+### Baseline inicial
 
 ```text
 40 arquivos analisados
@@ -601,21 +672,37 @@ Após a remoção do código de teste, uma nova análise apresentou:
 0 findings
 ```
 
-O estado atual consolidado é:
+### Validação controlada
 
-```text
-Semgrep findings: 0
+Foi introduzido temporariamente um código inseguro utilizando:
+
+```javascript
+eval(input)
 ```
 
-Esse procedimento permitiu validar não apenas a ausência de findings no baseline final, mas também a capacidade do controle de detectar o padrão configurado.
+O Semgrep detectou corretamente:
+
+```text
+javascript-eval-detection
+1 Code Finding
+Blocking
+```
+
+Após a validação, o código foi removido e o scan retornou:
+
+```text
+0 findings
+```
+
+Isso demonstrou que o controle era capaz de detectar o padrão inseguro configurado.
 
 ---
 
-## 🔬 Trivy - Container Security
+## 🛡️ Trivy - Container Security
 
-O Trivy é utilizado para analisar a imagem Docker e seus componentes.
+O Trivy foi utilizado para analisar a imagem da API e seus componentes.
 
-Baseline validado:
+Resultado do baseline validado:
 
 | Severidade | Findings |
 |---|---:|
@@ -625,157 +712,177 @@ Baseline validado:
 | Low | 35 |
 | **Total** | **79** |
 
-Os números representam **findings/CVEs identificados pelo scanner nos componentes analisados** e não significam, isoladamente, que todas as ocorrências sejam vulnerabilidades exploráveis no contexto da aplicação.
+Esses valores representam **findings identificados pelo scanner**, e não devem ser interpretados automaticamente como 79 vulnerabilidades exploráveis.
 
-### Análise do finding Critical
-
-A análise identificou:
+O finding Critical investigado foi:
 
 ```text
 CVE-2026-59873
-Package: tar
-Installed: 6.2.1
-Fixed: 7.5.19
 ```
 
-A investigação mostrou que o pacote não fazia parte diretamente da árvore de dependências da aplicação:
-
-```bash
-npm ls tar
-```
-
-Resultado:
+Pacote:
 
 ```text
-(empty)
+tar
 ```
 
-Dentro da imagem, o componente foi localizado no npm global da imagem base:
+Versão observada:
 
 ```text
-/usr/local/lib/node_modules/npm/node_modules/tar/package.json
+6.2.1
 ```
 
-Portanto, o finding crítico observado está associado à cadeia da imagem base/npm, e não a uma dependência declarada diretamente pela aplicação.
+Versão indicada pelo scanner como corrigida:
 
-Também foi realizado rebuild com a versão disponível de `node:20-alpine`, sem alteração no baseline.
+```text
+7.5.19
+```
 
-Uma tentativa controlada de atualização para `npm@latest` não foi adotada porque a versão disponível exigia uma versão mais recente do Node.js, o que introduziria uma alteração de runtime apenas para eliminar o finding.
+A investigação mostrou que o componente estava associado ao npm global da imagem base Node.js, e não às dependências diretas da aplicação.
 
-O risco residual foi, portanto, identificado e documentado sem comprometer a estabilidade da aplicação.
+O risco foi documentado como baseline e risco residual, evitando uma alteração não validada que pudesse comprometer a estabilidade da aplicação.
 
 ---
 
 ## 🌐 OWASP ZAP - DAST
 
-O OWASP ZAP foi utilizado para realizar uma análise dinâmica baseline contra a API em execução.
+O OWASP ZAP foi utilizado como baseline de análise dinâmica da aplicação em execução.
 
-Resultado validado:
+Resultado:
 
-| Resultado | Quantidade |
-|---|---:|
-| PASS | 65 |
-| WARN | 2 |
-| FAIL | 0 |
+```text
+PASS      65
+WARN       2
+FAIL       0
+```
 
-Os dois warnings observados foram relacionados a:
+Os dois WARN observados foram:
 
 ```text
 Storable and Cacheable Content
 Cross-Domain Misconfiguration
 ```
 
-Os alertas apareceram associados a respostas de rotas como `/`, `robots.txt` e `sitemap.xml`, incluindo respostas HTTP 404.
+Os avisos estavam relacionados às respostas observadas durante o baseline e foram mantidos como findings para análise.
 
-Por esse motivo, os warnings foram mantidos como **achados do baseline para análise**, sem classificá-los automaticamente como vulnerabilidades confirmadas.
-
-O endpoint Swagger disponível é:
-
-```text
-/api-docs/
-```
-
-Durante a validação, não foi identificado um endpoint OpenAPI JSON independente apropriado para execução do modo API Scan do ZAP. Para evitar alterações artificiais na API apenas para atender ao scanner, o projeto manteve o baseline DAST como controle implementado.
+Os resultados do ZAP não foram classificados automaticamente como vulnerabilidades confirmadas.
 
 ---
 
-# 📈 Observabilidade
+# 📊 Observabilidade
 
-A camada de observabilidade utiliza:
+A API utiliza `prom-client` para exposição de métricas compatíveis com Prometheus.
 
-```text
-API
- │
- ├── métricas HTTP
- │
- └── métricas consolidadas de segurança
-           │
-           ▼
-       Prometheus
-           │
-           ▼
-         Grafana
-```
-
-A aplicação utiliza `prom-client` para disponibilizar métricas no endpoint:
+Endpoint:
 
 ```text
 /metrics
 ```
 
-Entre as métricas operacionais estão:
+Entre as métricas utilizadas estão:
 
 ```text
 ecommerce_http_requests_total
 ecommerce_http_request_duration_seconds
-```
-
-Também foi criada a métrica consolidada:
-
-```text
 ecommerce_security_findings
 ```
 
 ---
 
-## 🔐 Métricas de segurança
+## Prometheus
 
-Os resultados do último baseline validado são consolidados em:
+Configuração:
 
 ```text
-security/security-summary.json
+monitoring/prometheus/prometheus.yml
+```
+
+O Prometheus realiza o scrape da API no endpoint:
+
+```text
+/metrics
+```
+
+Target validado:
+
+```text
+ecommerce-api
+State: UP
+```
+
+---
+
+# 📈 Grafana
+
+O Grafana utiliza o Prometheus como Data Source.
+
+Configuração do Data Source:
+
+```text
+monitoring/grafana/provisioning/datasources/prometheus.yml
+```
+
+Provisionamento dos dashboards:
+
+```text
+monitoring/grafana/provisioning/dashboards/dashboards.yml
+```
+
+Dashboards versionados:
+
+```text
+monitoring/grafana/dashboards/ecommerce-observability.json
+monitoring/grafana/dashboards/ecommerce-security-overview.json
+```
+
+Os dashboards são provisionados automaticamente quando o ambiente é iniciado.
+
+---
+
+## 📊 E-Commerce API - Observability Dashboard
+
+O dashboard operacional apresenta:
+
+- taxa de requisições HTTP;
+- requisições por status HTTP;
+- tempo médio de resposta;
+- disponibilidade da API.
+
+Consultas utilizadas incluem:
+
+```promql
+sum(rate(ecommerce_http_requests_total[1m]))
+```
+
+```promql
+sum by (status_code) (
+  rate(ecommerce_http_requests_total[1m])
+)
+```
+
+```promql
+sum(rate(ecommerce_http_request_duration_seconds_sum[1m]))
+/
+sum(rate(ecommerce_http_request_duration_seconds_count[1m]))
+```
+
+```promql
+up{job="ecommerce-api"}
+```
+
+---
+
+# 🛡️ Security Observability
+
+Além das métricas operacionais, a API expõe métricas consolidadas do último baseline de segurança validado.
+
+Métrica:
+
+```text
+ecommerce_security_findings
 ```
 
 Exemplo:
-
-```json
-{
-  "trivy": {
-    "critical": 1,
-    "high": 23,
-    "medium": 20,
-    "low": 35
-  },
-  "semgrep": {
-    "findings": 0
-  },
-  "zap": {
-    "pass": 65,
-    "warn": 2,
-    "fail": 0
-  }
-}
-```
-
-O módulo:
-
-```text
-src/config/securityMetrics.js
-```
-
-transforma o resumo em métricas Prometheus.
-
-Exemplos:
 
 ```text
 ecommerce_security_findings{scanner="trivy",severity="critical"} 1
@@ -790,169 +897,48 @@ ecommerce_security_findings{scanner="zap",severity="warn"} 2
 ecommerce_security_findings{scanner="zap",severity="fail"} 0
 ```
 
-> Essas métricas representam o **último baseline de segurança consolidado**. O Grafana não executa Semgrep, Trivy ou ZAP em tempo real.
+Esses valores representam um **snapshot do último baseline validado**.
+
+Os scanners não são executados em tempo real pelo Prometheus.
 
 ---
 
-## Prometheus
+## 🛡️ E-Commerce API - Security Overview
 
-Interface:
-
-```text
-http://localhost:9090
-```
-
-Target:
-
-```text
-ecommerce-api
-```
-
-Coleta:
-
-```text
-api:3000/metrics
-```
-
-Quando a comunicação está funcionando corretamente:
-
-```text
-UP
-```
-
-Exemplo de consulta das métricas de segurança:
-
-```promql
-ecommerce_security_findings
-```
-
-Para consultar somente o Trivy:
-
-```promql
-ecommerce_security_findings{scanner="trivy"}
-```
-
----
-
-# 📊 Grafana
-
-Interface:
-
-```text
-http://localhost:3001
-```
-
-O Prometheus é configurado automaticamente como Data Source através de:
-
-```text
-grafana/provisioning/datasources/prometheus.yml
-```
-
-Os dashboards são provisionados automaticamente através de:
-
-```text
-grafana/provisioning/dashboards/dashboards.yml
-```
-
-O projeto possui dois dashboards:
-
-```text
-E-Commerce API - Observability Dashboard
-E-Commerce API - Security Overview
-```
-
-Arquivos:
-
-```text
-grafana/dashboards/ecommerce-observability.json
-grafana/dashboards/ecommerce-security-overview.json
-```
-
----
-
-## 📊 Observability Dashboard
-
-O dashboard operacional contém quatro indicadores principais.
-
-### Taxa de Requisições HTTP
-
-```promql
-sum(rate(ecommerce_http_requests_total[1m]))
-```
-
-### Requisições por Status HTTP
-
-```promql
-sum by (status_code) (
-  rate(ecommerce_http_requests_total[1m])
-)
-```
-
-### Tempo Médio de Resposta
-
-```promql
-sum(rate(ecommerce_http_request_duration_seconds_sum[1m]))
-/
-sum(rate(ecommerce_http_request_duration_seconds_count[1m]))
-```
-
-### Disponibilidade da API
-
-```promql
-up{job="ecommerce-api"}
-```
-
-O valor `1` indica que o Prometheus está conseguindo coletar as métricas da API.
-
----
-
-## 🛡️ Security Overview
-
-O dashboard:
-
-```text
-E-Commerce API - Security Overview
-```
-
-centraliza os resultados do último baseline validado.
+O dashboard de segurança apresenta:
 
 ### Trivy
 
-Cards:
-
 ```text
-Critical    1
-High       23
-Medium     20
-Low        35
+Critical: 1
+High:     23
+Medium:   20
+Low:      35
 ```
 
-Além dos cards, o dashboard apresenta a distribuição dos findings por severidade.
+Além dos indicadores individuais, existe uma visualização da distribuição dos findings por severidade.
 
 ### Semgrep
 
 ```text
-SAST - Semgrep
-Findings atuais: 0
+SAST Findings: 0
 ```
 
 ### OWASP ZAP
 
 ```text
-FAIL     0
-PASS    65
-WARN     2
+FAIL: 0
+PASS: 65
+WARN: 2
 ```
 
-A apresentação separada mantém a semântica própria de cada scanner e evita tratar `PASS`, `WARN` e `FAIL` do ZAP como níveis de severidade equivalentes aos utilizados pelo Trivy.
-
-O dashboard foi exportado e validado através do provisioning do Grafana. Após o restart do serviço, os dashboards de observabilidade e segurança foram carregados automaticamente.
+A finalidade do dashboard é fornecer uma visão consolidada do baseline de segurança do projeto.
 
 ---
 
 # 🏗️ Infraestrutura como Código
 
-O projeto utiliza **Terraform** para provisionar recursos AWS simulados através do **LocalStack**.
+O projeto utiliza Terraform para demonstrar provisionamento declarativo de infraestrutura.
 
 Arquivos:
 
@@ -965,19 +951,11 @@ terraform/
 └── variables.tf
 ```
 
-O provider AWS é direcionado ao endpoint local:
-
-```text
-http://localhost:4566
-```
-
-Dessa forma, é possível demonstrar Infrastructure as Code sem criar recursos na conta AWS real.
-
 ---
 
-# ☁️ LocalStack + Amazon S3
+## LocalStack
 
-O LocalStack é executado como parte do Docker Compose.
+O LocalStack é utilizado para simular serviços AWS localmente.
 
 Endpoint:
 
@@ -985,343 +963,168 @@ Endpoint:
 http://localhost:4566
 ```
 
-O Terraform provisiona o bucket:
+Serviço utilizado:
+
+```text
+S3
+```
+
+Recurso provisionado:
 
 ```text
 ecommerce-observability-assets
 ```
 
-O projeto também habilita **versionamento do S3**.
-
-Recursos gerenciados:
-
-```text
-aws_s3_bucket.ecommerce_assets
-aws_s3_bucket_versioning.ecommerce_assets
-```
+Com versionamento habilitado.
 
 ---
 
-## Executando o Terraform
+## Terraform
 
-Inicialize:
-
-```bash
-terraform -chdir=terraform init
-```
-
-Formate:
+Inicialização:
 
 ```bash
-terraform -chdir=terraform fmt
+cd terraform
+terraform init
 ```
 
-Valide:
+Planejamento:
 
 ```bash
-terraform -chdir=terraform validate
+terraform plan
 ```
 
-Visualize o plano:
+Aplicação:
 
 ```bash
-terraform -chdir=terraform plan
+terraform apply
 ```
 
-Aplique:
-
-```bash
-terraform -chdir=terraform apply
-```
-
-Após o provisionamento:
-
-```bash
-terraform -chdir=terraform state list
-```
-
-Resultado esperado:
+Recursos validados:
 
 ```text
-aws_s3_bucket.ecommerce_assets
-aws_s3_bucket_versioning.ecommerce_assets
+aws_s3_bucket.observability
+aws_s3_bucket_versioning.observability
 ```
 
-Outputs:
-
-```bash
-terraform -chdir=terraform output
-```
-
-Exemplo:
-
-```text
-bucket_arn  = "arn:aws:s3:::ecommerce-observability-assets"
-bucket_name = "ecommerce-observability-assets"
-```
-
----
-
-## ♻️ Idempotência
-
-Após a criação da infraestrutura, uma nova execução de:
-
-```bash
-terraform -chdir=terraform plan
-```
-
-deve identificar:
+Após o provisionamento, uma segunda execução de `terraform plan` apresentou:
 
 ```text
 No changes. Your infrastructure matches the configuration.
 ```
 
-Isso demonstra uma propriedade fundamental da Infraestrutura como Código: o Terraform compara o **estado desejado** com o **estado atual** da infraestrutura.
+Isso demonstra que o estado desejado e o estado provisionado estavam alinhados no momento da validação.
 
 ---
 
-# 🔐 Boas práticas de segurança
+# 🔒 Boas práticas de segurança
 
-O projeto adota cuidados para reduzir a exposição de informações sensíveis e introduzir controles de segurança no ciclo de desenvolvimento.
+O projeto adota práticas como:
 
-Entre as medidas implementadas:
-
-- `.env` não versionado;
-- `.env.example` sem senha real;
-- senha do PostgreSQL obtida através de variável de ambiente;
-- `LOCALSTACK_AUTH_TOKEN` obtido através de variável de ambiente;
-- token do LocalStack não armazenado no `docker-compose.yml`;
-- credenciais do Docker Hub armazenadas como GitHub Actions Secrets;
-- arquivos `terraform.tfstate` ignorados;
-- diretório `.terraform/` ignorado;
+- remoção de senha hardcoded da configuração da aplicação;
+- `.env` ignorado pelo Git;
+- `.env.example` sem credenciais reais;
+- token do LocalStack mantido apenas no ambiente local;
+- credenciais do Docker Hub armazenadas como GitHub Secrets;
+- `.terraform/` e arquivos `tfstate` ignorados;
 - `.terraform.lock.hcl` versionado;
-- relatórios brutos de scanners ignorados pelo Git;
-- remoção de senha hardcoded;
-- SAST com Semgrep;
-- análise da imagem com Trivy;
+- relatórios brutos de scanners não versionados;
+- resumo sanitizado de segurança versionado;
+- análise SAST integrada à pipeline;
+- análise de imagem com Trivy;
 - baseline DAST com OWASP ZAP;
-- consolidação dos resultados de segurança em métricas observáveis.
-
-Exemplo utilizado no Compose:
-
-```yaml
-LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN}
-```
-
-O valor da credencial permanece somente no ambiente local.
+- tags de imagem vinculadas ao SHA do commit.
 
 ---
 
-# 📁 Arquivos locais ignorados
+# 🔗 Repositórios e artefatos
 
-Entre os arquivos e diretórios que não devem ser enviados ao Git estão:
+## Código-fonte
+
+GitHub:
 
 ```text
-.env
-node_modules/
-coverage/
-dist/
-*.log
-**/.terraform/*
-*.tfstate
-*.tfstate.*
-*.tfplan
-security/reports/*.json
+https://github.com/alexsabrasil/devops-infra-observability
 ```
 
-O relatório bruto do Trivy permanece local:
+## Docker Hub - API
 
 ```text
-security/reports/trivy-report.json
+https://hub.docker.com/r/alexsasec/devops-infra-observability-api
 ```
 
-Já o resumo sanitizado é versionado:
+## Docker Hub - Frontend
 
 ```text
-security/security-summary.json
-```
-
-O Terraform lock file também é intencionalmente versionado:
-
-```text
-terraform/.terraform.lock.hcl
+https://hub.docker.com/r/alexsasec/devops-infra-observability-frontend
 ```
 
 ---
 
-# 🔍 Fluxo completo do projeto
+# ✅ Validações finais
+
+O ambiente final foi validado com:
 
 ```text
-                           DESENVOLVIMENTO
-                                 │
-                                 ▼
-                         Node.js + Express
-                                 │
-                   ┌─────────────┴─────────────┐
-                   ▼                           ▼
-              PostgreSQL                    Redis
-                   │
-                   └─────────────┬─────────────┘
-                                 ▼
-                              Testes
-                                 │
-                                 ▼
-                                Git
-                                 │
-                                 ▼
-                         GitHub Actions
-                                 │
-                                 ▼
-                         Testes - Jest
-                                 │
-                                 ▼
-                         Semgrep - SAST
-                                 │
-                                 ▼
-                         Docker Build
-                                 │
-                                 ▼
-                         Trivy Security
-                                 │
-                                 ▼
-                       Build + Docker Hub
+Frontend React                  ✅
+React + Vite Build              ✅
+ESLint                          ✅
+Frontend em Nginx               ✅
+Frontend Docker                 ✅
+Frontend no Docker Compose      ✅
+Frontend → API /health          ✅
 
+API Node.js + Express           ✅
+PostgreSQL                      ✅
+Redis                           ✅
+Docker                          ✅
+Docker Compose                  ✅
 
-                            DAST
-                             │
-                             ▼
-                       API em execução
-                             │
-                             ▼
-                         OWASP ZAP
+Testes automatizados            ✅ 77/77
 
+GitHub Actions                  ✅
+Semgrep SAST                    ✅
+Trivy                           ✅
+OWASP ZAP                       ✅
 
-                       OBSERVABILIDADE
-                             │
-                             ▼
-                         API /metrics
-                             │
-               ┌─────────────┴─────────────┐
-               │                           │
-               ▼                           ▼
-        Métricas HTTP              Security Baseline
-               │                           │
-               └─────────────┬─────────────┘
-                             ▼
-                         Prometheus
-                             │
-                             ▼
-                           Grafana
-                       ┌─────┴─────┐
-                       ▼           ▼
-                  Observability  Security
-                    Dashboard    Overview
+Docker Hub API                  ✅
+Docker Hub Frontend             ✅
+Tags latest + commit SHA        ✅
 
+Prometheus                      ✅
+Grafana                         ✅
+Observability Dashboard         ✅
+Security Overview               ✅
+Provisionamento dos dashboards  ✅
 
-                 INFRAESTRUTURA COMO CÓDIGO
-                             │
-                             ▼
-                         Terraform
-                             │
-                             ▼
-                       AWS Provider
-                             │
-                             ▼
-                        LocalStack
-                             │
-                             ▼
-                         Amazon S3
+Terraform                       ✅
+LocalStack                      ✅
+Amazon S3 simulado              ✅
+
+Estrutura monitoring/           ✅
+Hardening de configuração       ✅
 ```
 
----
-
-# ✅ Validações realizadas
-
-Durante a implementação foram validados:
-
-- aplicação executando em container;
-- PostgreSQL operacional;
-- Redis operacional;
-- health check da API;
-- Swagger;
-- endpoint `/metrics`;
-- 6 suítes e 77 testes automatizados aprovados;
-- pipeline GitHub Actions;
-- Semgrep executado localmente;
-- teste controlado de detecção do Semgrep;
-- Semgrep integrado à pipeline;
-- baseline final Semgrep com 0 findings;
-- Trivy executado contra a imagem Docker;
-- 79 findings classificados no baseline;
-- investigação do finding Critical;
-- Trivy integrado à pipeline;
-- OWASP ZAP executado contra a API;
-- baseline ZAP com 65 PASS, 2 WARN e 0 FAIL;
-- build da imagem Docker;
-- publicação da imagem;
-- Prometheus coletando métricas operacionais;
-- target da API em estado `UP`;
-- métricas de segurança expostas pela API;
-- oito séries de segurança validadas no Prometheus;
-- Grafana conectado ao Prometheus;
-- dashboard de observabilidade;
-- dashboard de segurança;
-- provisioning automático dos dois dashboards;
-- LocalStack operacional;
-- Terraform validado;
-- Terraform Plan;
-- Terraform Apply;
-- criação do bucket S3;
-- versionamento do bucket;
-- Terraform State;
-- Terraform Outputs;
-- idempotência com `No changes`;
-- remoção de senha hardcoded;
-- pipeline final com Test, Semgrep, Trivy e Build/Push concluída com sucesso.
+**Status: implementação concluída e validada.**
 
 ---
 
-# 💡 Conceitos aplicados
+# 💼 Valor técnico da solução
 
-### Automação
+O projeto demonstra que uma aplicação não precisa ser tratada apenas como código-fonte.
 
-Redução de tarefas manuais através de GitHub Actions, Docker Compose, provisioning do Grafana e Terraform.
+Ao integrar desenvolvimento, automação, segurança, observabilidade e infraestrutura, a solução passa a possuir controles capazes de:
 
-### Reprodutibilidade
+- reduzir atividades manuais repetitivas;
+- validar alterações antes da publicação;
+- aumentar a rastreabilidade entre código e imagem;
+- antecipar a identificação de problemas de segurança;
+- fornecer visibilidade operacional;
+- tornar a infraestrutura reproduzível;
+- facilitar diagnóstico e tomada de decisão;
+- criar uma base mais consistente para evolução da aplicação.
 
-Ambiente, infraestrutura, dashboards e configurações descritos através de código e arquivos versionados.
-
-### Observabilidade
-
-A aplicação disponibiliza dados sobre seu comportamento operacional e também expõe o último baseline consolidado dos controles de segurança.
-
-### Infrastructure as Code
-
-A infraestrutura simulada é criada declarativamente pelo Terraform.
-
-### Continuous Integration
-
-Cada alteração enviada à branch principal passa pelos testes e controles definidos na pipeline.
-
-### Continuous Delivery
-
-Após as validações anteriores, a pipeline constrói e publica a imagem Docker.
-
-### Shift Left Security
-
-A análise estática com Semgrep ocorre antes da construção e publicação final da imagem, antecipando verificações de segurança no ciclo.
-
-### Segurança de containers
-
-O Trivy analisa componentes e dependências presentes na imagem Docker, permitindo identificar e classificar findings antes da publicação final.
-
-### Segurança dinâmica
-
-O OWASP ZAP complementa os controles anteriores analisando a aplicação em execução.
-
-### Gestão de risco
-
-Findings não são tratados automaticamente como vulnerabilidades exploráveis. Os resultados são analisados considerando origem, componente afetado, contexto e impacto de possíveis remediações.
+O foco não está apenas nas ferramentas utilizadas, mas na **integração entre elas dentro de um fluxo técnico verificável**.
 
 ---
 
@@ -1329,11 +1132,33 @@ Findings não são tratados automaticamente como vulnerabilidades exploráveis. 
 
 O desenvolvimento deste projeto permitiu integrar tecnologias que normalmente são estudadas separadamente.
 
-A aplicação tornou-se o centro de um ecossistema que envolve código, testes, containers, automação, segurança, infraestrutura e monitoramento.
+A aplicação tornou-se o centro de um ecossistema que envolve:
+
+```text
+Frontend
+   +
+Backend
+   +
+Dados
+   +
+Containers
+   +
+Testes
+   +
+CI/CD
+   +
+Segurança
+   +
+Observabilidade
+   +
+Infraestrutura como Código
+```
 
 Um dos principais aprendizados foi compreender que DevOps não se resume à utilização de ferramentas. O valor está na integração entre elas para criar um processo mais **automatizado, reproduzível, observável e seguro**.
 
-A introdução dos controles DevSecOps também evidenciou que segurança não significa apenas encontrar vulnerabilidades. É necessário interpretar os resultados dos scanners, investigar a origem dos componentes afetados, avaliar riscos e decidir como tratar findings sem comprometer desnecessariamente a estabilidade da aplicação.
+A introdução dos controles DevSecOps também demonstrou que segurança não significa apenas encontrar findings. É necessário interpretar os resultados dos scanners, investigar a origem dos componentes afetados, avaliar riscos e decidir como tratá-los sem comprometer desnecessariamente a estabilidade da aplicação.
+
+A implementação do frontend React ampliou essa visão ao demonstrar a comunicação entre a interface da aplicação e a API dentro da mesma arquitetura containerizada.
 
 ---
 
@@ -1349,52 +1174,27 @@ Projeto desenvolvido em equipe durante a formação em **DevOps - FAP | Aponti A
 
 ---
 
-# 📌 Status do projeto
-
-```text
-API                         ✅
-PostgreSQL                  ✅
-Redis                       ✅
-Docker                      ✅
-Docker Compose              ✅
-Testes automatizados        ✅ 77/77
-CI/CD                       ✅
-Docker Hub                  ✅
-Semgrep SAST                ✅
-Trivy                       ✅
-OWASP ZAP                   ✅
-Prometheus                  ✅
-Grafana                     ✅
-Observability Dashboard     ✅
-Security Overview           ✅
-Terraform                   ✅
-LocalStack                  ✅
-Amazon S3 simulado          ✅
-Hardening de configuração   ✅
-```
-
-**Status: implementação concluída e validada.**
-
----
-
-## 🔭 Evoluções futuras
+# 🔭 Evoluções futuras
 
 O projeto pode evoluir com:
 
-- política progressivamente mais restritiva para findings Critical/High no Trivy;
-- atualização controlada da imagem base e componentes associados;
-- geração automática dos relatórios de segurança como artifacts da pipeline;
+- ampliação funcional do frontend React;
+- testes automatizados específicos para componentes do frontend;
+- análise Trivy também sobre a imagem do frontend;
+- política progressivamente mais restritiva para findings Critical/High;
+- atualização controlada das imagens base;
+- geração automática de relatórios de segurança como artifacts da pipeline;
 - atualização automatizada do `security-summary.json`;
 - endpoint OpenAPI JSON dedicado para ampliar a análise DAST;
-- alertas de segurança baseados em métricas;
+- alertas operacionais e de segurança baseados em métricas;
 - gerenciamento centralizado de segredos;
-- execução em infraestrutura cloud real;
-- pinning de versões/digests das imagens e Actions utilizadas no pipeline.
+- implantação em infraestrutura cloud real;
+- pinning de versões/digests das imagens e Actions utilizadas na pipeline.
 
 ---
 
 <p align="center">
-  <strong>E-Commerce API | DevOps, DevSecOps & Observability</strong>
+  <strong>E-Commerce | DevOps, DevSecOps & Observability</strong>
 </p>
 
 <p align="center">
