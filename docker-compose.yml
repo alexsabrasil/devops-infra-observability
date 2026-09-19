@@ -87,8 +87,22 @@ services:
       - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
 
+  localstack:
+    image: localstack/localstack:latest
+    container_name: ecommerce-localstack
+    restart: unless-stopped
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEBUG=0
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN}
+    volumes:
+      - localstackdata:/var/lib/localstack
+
 volumes:
   pgdata:
   redisdata:
   prometheusdata:
   grafanadata:
+  localstackdata:

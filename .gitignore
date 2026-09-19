@@ -4,3 +4,11 @@ coverage/
 *.log
 dist/
 .DS_Store
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
