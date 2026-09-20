@@ -12,15 +12,7 @@
 
 </p>
 
-<p align="center">
-
-  <img src="docs/images/ecommerce-devops-observability.png"
-
-       alt="Visão geral do projeto E-Commerce com DevOps, DevSecOps e Observabilidade"
-
-       width="100%">
-
-</p>
+![Visão geral do projeto E-Commerce com DevOps, DevSecOps e Observabilidade](./docs/images/ecommerce-devops-observability.png)
 
 ---
 
