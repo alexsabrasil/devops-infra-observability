@@ -15,3 +15,6 @@ crash.*.log
 
 # Security scan reports
 security/reports/*.json
+frontend-backup/
+frontend-professor/
+frontend.zip
