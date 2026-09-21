@@ -1539,7 +1539,7 @@ O projeto adota práticas como:
 - baseline DAST com OWASP ZAP;
 
 - tags de imagem vinculadas ao SHA do commit.
-
+                                                   
 ---
 
 # 🔗 Repositórios e artefatos
