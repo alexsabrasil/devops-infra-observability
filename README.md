@@ -1703,12 +1703,14 @@ Projeto desenvolvido em equipe durante a formação em **DevOps - FAP | Aponti A
 
 **Integrantes**
 
-- Alexsandra Tavares
+- [Alexsandra Tavares](https://github.com/alexsabrasil)
 
-- Carlos Eduardo
+- [Carlos Eduardo](https://github.com/eduardostc) • [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/eduardostc/)
 
-- Vinicius Lacerda
+- [Vinicius Lacerda](https://github.com/vlacerda93)
 
+**Contribuições Técnicas**
+- **Carlos Eduardo**: Instrumentação de métricas com Prometheus, visualização com Grafana, suporte à conteinerização Docker e estruturação do pipeline CI/CD no GitHub Actions.
 ---
 
 # 🔭 Evoluções futuras
